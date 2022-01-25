@@ -1,0 +1,3 @@
+rodar git rm -r --cached . para remover os arquivos obj e bin dps do gitignore criado
+
+criar o database/collection na mao no robo3t e dps tentar fazer alguma operacao que vai inserir automatico

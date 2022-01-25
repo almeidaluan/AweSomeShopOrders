@@ -1,0 +1,48 @@
+@baseUrl = http://localhost:5223
+
+
+GET {{baseUrl}}/teste/saudacao
+
+###
+
+POST {{baseUrl}}/Order
+content-type: application/json
+
+{
+  "customer": {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "fullName": "string",
+    "email": "string"
+  },
+  "orderItems": [
+    {
+      "productId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "quantity": 0,
+      "price": 0
+    }
+  ],
+  "deliveryAddress": {
+    "street": "string",
+    "number": "string",
+    "city": "string",
+    "state": "string",
+    "zipCode": "string"
+  },
+  "paymentAddress": {
+    "street": "string",
+    "number": "string",
+    "city": "string",
+    "state": "string",
+    "zipCode": "string"
+  },
+  "paymentInfo": {
+    "cardNumber": "string",
+    "fullName": "string",
+    "expirationDate": "string",
+    "cvv": "string"
+  }
+}
+
+###
+
+GET {{baseUrl}}/Order?id=57e2d094-9afe-4f9e-8a8f-61d8d4f056a6
