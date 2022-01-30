@@ -23,7 +23,7 @@ Tecnologia e Patterns utilizados:
 ## Installation
 
 Executar docker-compose para instalar o MySQL em um container.
-Entrar na pasta  `DevFreela.API`.
+Entrar na pasta  `AweSomeShopOrders.API`.
 
 Executar o seguinte comando para executar o projeto.
 
