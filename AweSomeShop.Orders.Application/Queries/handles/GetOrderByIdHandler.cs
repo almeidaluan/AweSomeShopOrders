@@ -13,30 +13,38 @@ namespace AweSomeShop.Orders.Application.Queries.handles
 
         private readonly IMessageBusClient messageBus;
 
-        public GetOrderByIdHandler(IOrderRepository orderRepository,IMessageBusClient messageBusClient){
+        private readonly ICacheService cacheService;
+        public GetOrderByIdHandler(IOrderRepository orderRepository,IMessageBusClient messageBusClient,ICacheService cacheService){
             this._orderRepository = orderRepository;
             this.messageBus = messageBusClient;
+            this.cacheService = cacheService;
         }
 
         public async Task<OrderViewModel> Handle(GetOrderDetailByIdQueries request, CancellationToken cancellationToken)
         {
-            var order = await _orderRepository.GetByIdAsync(request.Id);
+            var cacheKey = request.Id.ToString();
+            
+            var orderViewModelCache = await cacheService.GetAsync<OrderViewModel>(cacheKey);
+            
+            if(orderViewModelCache == null){
+                var order = await _orderRepository.GetByIdAsync(request.Id);
+                
+                orderViewModelCache = OrderViewModel.FromEntity(order);
 
-            if(order == null){
-                return null;
-            }
-            var orderViewModel = OrderViewModel.FromEntity(order);
-            
-            var listaOrders = new List<Order>();
-            
-            for (int i = 1; i <=10000; i++)
-            {
-              listaOrders.Add(order);
-            }
-            
-            this.messageBus.Publish(listaOrders,"order-find-rountingkey","payment-service"); 
+                await cacheService.SetAsync(cacheKey, orderViewModelCache);
 
-            return orderViewModel;
+            }
+
+            // var listaOrders = new List<Order>();
+            
+            // for (int i = 1; i <=10000; i++)
+            // {
+            //   listaOrders.Add(order);
+            // }
+            
+            // this.messageBus.Publish(listaOrders,"order-find-rountingkey","payment-service"); 
+
+            return orderViewModelCache;
 
         }
     }

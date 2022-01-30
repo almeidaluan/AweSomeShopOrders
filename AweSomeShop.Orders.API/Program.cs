@@ -15,7 +15,7 @@ builder.Services.AddRepositoriesDependencies();
 builder.Services.AddMongo();
 builder.Services.AddMessageBus();
 builder.Services.AddConsulConfig(builder.Configuration);
-
+builder.Services.AddCacheRedis();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

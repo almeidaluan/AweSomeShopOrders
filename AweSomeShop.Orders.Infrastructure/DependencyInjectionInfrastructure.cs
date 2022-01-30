@@ -12,6 +12,7 @@ using Consul;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using AweSomeShop.Orders.Infrastructure.servicediscovery;
+using AweSomeShop.Orders.Infrastructure.cachestorage;
 
 namespace AweSomeShop.Orders.Infrastructure
 {
@@ -69,6 +70,18 @@ namespace AweSomeShop.Orders.Infrastructure
             return services;
         }
 
+        public static IServiceCollection AddCacheRedis(this IServiceCollection services){
+            services.AddStackExchangeRedisCache(options => {
+                options.InstanceName = "OrdersCache";
+                options.Configuration = $"localhost, port:6379, password=teste1234";
+                
+                
+            });
+            services.AddScoped<ICacheService,CacheService>();
+
+            return services;
+        }
+
         public static IApplicationBuilder UseConsul(this IApplicationBuilder app){
             
             var consulClient = app.ApplicationServices.GetRequiredService<IConsulClient>();
@@ -92,5 +105,7 @@ namespace AweSomeShop.Orders.Infrastructure
             return app;
             
         }
+
+        
     }
 }
